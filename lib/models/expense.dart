@@ -1,5 +1,8 @@
 import 'package:uuid/uuid.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+// for having unique values of expenses
 const uuid = Uuid();
 
 enum Category {
@@ -10,6 +13,22 @@ enum Category {
   travel,
   support
 } // support is for nanny's all related support // this is a type definition of enum Category without any closing ;
+
+extension CategoryExtension on Category {
+  String get name => toString().split('.').last;
+}
+
+const Map categoryIcon = {
+  Category.cloths: Icons.child_care,
+  Category.food: Icons.dining,
+  Category.sanitary: Icons.baby_changing_station,
+  Category.medical: Icons.medication,
+  Category.travel: Icons.leave_bags_at_home,
+  Category.support: Icons.support_agent,
+};
+
+//formatter to get the formatted value of date
+final formatter = DateFormat.yMMMd();
 
 class Expense {
   Expense(
@@ -26,4 +45,9 @@ class Expense {
   final double amount;
   final String id;
   final Category category;
+
+// to show formatted date in the widget
+  String get formattedDate {
+    return formatter.format(date);
+  }
 }
