@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -13,11 +14,27 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+  DateTime? _selectedDate;
   @override
   void dispose() {
     _titleController.dispose();
     _amountController.dispose();
     super.dispose();
+  }
+
+  void _pickedDate() async {
+// logic of date shown on the date picker
+    final DateTime currentDate = DateTime.now();
+    final pickedDate = await showDatePicker(
+      context: context,
+      firstDate: currentDate,
+      lastDate: currentDate.add(
+        const Duration(days: 365),
+      ),
+    );
+    setState(() {
+      _selectedDate = pickedDate;
+    });
   }
 
   @override
@@ -34,14 +51,37 @@ class _NewExpenseState extends State<NewExpense> {
               label: Text("Expense Title"),
             ),
           ),
-          TextField(
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            maxLength: 10,
-            decoration: const InputDecoration(
-              prefixText: "\$ ",
-              label: Text("Amount(\$)"),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  keyboardType: TextInputType.number,
+                  maxLength: 10,
+                  decoration: const InputDecoration(
+                    prefixText: "\$ ",
+                    label: Text("Amount(\$)"),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    (_selectedDate == null)
+                        ? const Text("Select Date")
+                        : Text(formatter.format(
+                            _selectedDate!)), // "select date will be shown when no date is selected while showing the data on the contrary, a null check is added by addning !"
+                    const SizedBox(
+                      width: 2,
+                    ),
+                    IconButton(
+                        onPressed: _pickedDate,
+                        icon: const Icon(Icons.calendar_month))
+                  ],
+                ),
+              ),
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
