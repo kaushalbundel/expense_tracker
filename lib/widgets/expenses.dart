@@ -33,9 +33,18 @@ class _ExpenseState extends State<Expenses> {
   //function to display model overlay so that user can add expense entries
   void _addExpenseModelOverlay() {
     showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
-        builder: (ctx) =>
-            const NewExpense()); // there are other widgets that can be called by using "show" keywords
+        builder: (ctx) => NewExpense(
+              onAddExpense: _addExpense,
+            )); // there are other widgets that can be called by using "show" keywords
+  }
+
+//function to append items in the above expenseList list
+  void _addExpense(Expense expense) {
+    setState(() {
+      expenseList.add(expense);
+    });
   }
 
   @override
