@@ -173,11 +173,10 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text("Submit"),
               ),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Cancel"),
-              )
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Cancel"))
             ],
           )
         ],
